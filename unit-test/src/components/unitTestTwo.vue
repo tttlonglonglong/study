@@ -12,8 +12,8 @@
 
 <script>
 export default {
-  name: 'unitTestTwo',
-   props: {
+  name: "unitTestTwo",
+  props: {
     AddNum: {
       type: Number,
       default: 1
@@ -21,29 +21,34 @@ export default {
     InitNum: {
       type: Number,
       default: 1
-    }
+	},
+	x: Number,
+	y:Number
   },
-  data () {
+  data() {
     return {
-	  	msg: 'Welcome to Your 单元测试二',
-		ClickNum: 0,
-      	ResultNum: 0
-    }
+      msg: "Welcome to Your 单元测试二",
+      ClickNum: 0,
+      ResultNum: 0
+    };
   },
-   mounted () {
+  mounted() {
     this.ResultNum = this.InitNum;
   },
-   methods: {
-    add () {
+  methods: {
+    add() {
       this.ResultNum += this.AddNum;
-      this.ClickNum++
-      this.$emit('result', {
+      this.ClickNum++;
+      this.$emit("result", {
         ClickNum: this.ClickNum,
         ResultNum: this.ResultNum
-      })
+      });
+    },
+    multiplication(x, y) {
+      return x*y;
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

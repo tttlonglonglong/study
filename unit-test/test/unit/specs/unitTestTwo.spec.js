@@ -27,7 +27,10 @@ describe('unitTestTwo.vue', () => {
 			done()
 		}, 100)
 	})
-
+	it('测试vue函数', () => {
+		vm = createTest(unitTestTwo, { x: 2, y: 3 }, true)
+		expect(vm.multiplication(3, 4)).to.be.equal(12);
+	  })
 	it('测试创建Vue对象', () => {
 		let result
 		vm = createVue({
