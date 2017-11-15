@@ -71,7 +71,7 @@
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["default"] = printMe;
 function printMe() {
-	console.log('I get called from print.js!');
+	console.log('i get called from print.js!');
 }
 
 /***/ })
