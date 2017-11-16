@@ -13,13 +13,18 @@ module.exports = {
 	output: {
 		// filename: 'bundle.js',
 		filename: '[name].bundle.js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, 'dist'),
+		publicPath: '/', //外部访问输出文件夹的路径
 	},
+	devtool: 'inline-source-map',
+	devServer: {
+		contentBase: './dist'
+	}
 	// 插件
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
-			title: 'Output Management'
+			title: '04 开发配置'
 		})
 	],
 }

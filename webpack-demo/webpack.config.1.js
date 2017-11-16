@@ -7,14 +7,16 @@ const CleanWebpackPlugin = require('clean-webpack-plugin')
 module.exports = {
 	// entry: './src/index.js',
 	entry: {
-		app: './src/index.js',
-		print: './src/print.js'
+		app: './05.HRM热模块替换/src/index.js',
+		print: './05.HRM热模块替换/src/print.js'
 	},
+	devtool: 'inline-source-map',
 	output: {
 		// filename: 'bundle.js',
 		filename: '[name].bundle.js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, './05.HRM热模块替换/dist')
 	},
+
 	// 插件
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
