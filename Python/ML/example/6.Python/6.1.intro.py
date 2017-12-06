@@ -1,5 +1,11 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+import sys
+defaultencoding = 'utf-8'
+if sys.getdefaultencoding() != defaultencoding:
+    reload(sys)
+    sys.setdefaultencoding(defaultencoding)
+
 
 # 导入NumPy函数库，一般都是用这样的形式(包括别名np，几乎是约定俗成的)
 import numpy as np
@@ -285,25 +291,25 @@ if __name__ == "__main__":
     # plt.plot(x, y, 'r-', x, y, 'go', linewidth=2, markersize=8)
     # plt.grid(True)
     # plt.show()
+    #
+    # mpl.rcParams['font.sans-serif'] = [u'SimHei']  #FangSong/黑体 FangSong/KaiTi
+    # mpl.rcParams['axes.unicode_minus'] = False
 
-    mpl.rcParams['font.sans-serif'] = [u'SimHei']  #FangSong/黑体 FangSong/KaiTi
-    mpl.rcParams['axes.unicode_minus'] = False
-
-    # # 5.2 损失函数：Logistic损失(-1,1)/SVM Hinge损失/ 0/1损失
-    # x = np.array(np.linspace(start=-2, stop=3, num=1001, dtype=np.float))
-    # y_logit = np.log(1 + np.exp(-x)) / math.log(2)
-    # y_boost = np.exp(-x)
-    # y_01 = x < 0
-    # y_hinge = 1.0 - x
-    # y_hinge[y_hinge < 0] = 0
-    # plt.plot(x, y_logit, 'r-', label='Logistic Loss', linewidth=2)
-    # plt.plot(x, y_01, 'g-', label='0/1 Loss', linewidth=2)
-    # plt.plot(x, y_hinge, 'b-', label='Hinge Loss', linewidth=2)
-    # plt.plot(x, y_boost, 'm--', label='Adaboost Loss', linewidth=2)
-    # plt.grid()
-    # plt.legend(loc='upper right')
-    # # plt.savefig('1.png')
-    # plt.show()
+    # 5.2 损失函数：Logistic损失(-1,1)/SVM Hinge损失/ 0/1损失
+    x = np.array(np.linspace(start=-2, stop=3, num=1001, dtype=np.float))
+    y_logit = np.log(1 + np.exp(-x)) / math.log(2)
+    y_boost = np.exp(-x)
+    y_01 = x < 0
+    y_hinge = 1.0 - x
+    y_hinge[y_hinge < 0] = 0
+    plt.plot(x, y_logit, 'r-', label='Logistic Loss', linewidth=2)
+    plt.plot(x, y_01, 'g-', label='0/1 Loss', linewidth=2)
+    plt.plot(x, y_hinge, 'b-', label='Hinge Loss', linewidth=2)
+    plt.plot(x, y_boost, 'm--', label='Adaboost Loss', linewidth=2)
+    plt.grid()
+    plt.legend(loc='upper right')
+    # plt.savefig('1.png')
+    plt.show()
 
     # # 5.3 x^x
     # x = np.linspace(-1.3, 1.3, 101)

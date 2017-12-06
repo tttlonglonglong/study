@@ -1,5 +1,12 @@
 #!/usr/bin/python
-# -*- coding:utf-8 -*-
+# _*_ encoding:utf-8 _*_
+# 默认采用utf-8 编码
+import sys
+defaultencoding = 'utf-8'
+if sys.getdefaultencoding() != defaultencoding:
+    reload(sys)
+    sys.setdefaultencoding(defaultencoding)
+
 '''
 date:2017/12/5
 '''
@@ -25,7 +32,7 @@ import scipy.optimize as  opt
 import scipy
 
 # pythonplot: 用来绘制东西的包
-# import matplotlib.pyplot as  plt
+import matplotlib.pyplot as  plt
 # 单独引出里面的正态分布的,条状分布的什么..
 from scipy.stats import norm, poisson
 
@@ -312,9 +319,137 @@ if __name__ == "__main__":
     # [[90  96 102]
     #  [216 231 246]
     # [342 366 390]]
-    print 'dot相乘的结果--经典乘法',np.dot(aaa, bbb)
-    # [11  24  39  56  75  96 119 144 171]
-    print a*b
+    print 'aaa',aaa
+    print 'bbb', bbb
+    # 1*11+2*14+3*17
+    print 'dot相乘的结果--经典乘法--元素乘以列',np.dot(aaa, bbb)
+    # 1*11
+    print 'py乘法--对应的元素相乘', aaa*bbb
+
+    # 数组的拼接
+    a = np.arange(1, 10)
+    b = np.arange(10, 20)
+    print '数组的拼接', np.concatenate((a, b))
+
 
     # 5.绘图
-    # 5.1 绘制正太分布概率目睹函数
+    # 5.1 绘制正太分布概率密度函数
+    # 高斯的期望函数, 大概是0.4左右
+    mu = 0 #均值
+    sigma = 1 #方差
+    # mu-3 mu+3的方差
+    x = np.linspace(mu-3 * sigma, mu + 3*sigma, 51)
+    y = np.exp(-(x - mu) ** 2 / (2 * sigma ** 2)) / (math.sqrt(2 * math.pi) * sigma)
+    print x.shape
+    print 'x=', x
+    print y.shape
+    print 'y=', y
+    # 背景色
+    plt.figure(facecolor='w')
+    # x,y做红色的线, x,y再做一个绿色的圈, 然后线宽是2,圈的大小是8
+    plt.plot(x, y, 'r-', x, y, 'go', linewidth=2, markersize=8)
+    # x轴的名字
+    plt.xlabel('X', fontsize=16)
+    # y轴的名字
+    plt.ylabel('Y', fontsize=16)
+    # 图表的标题
+    #  标题要是能显示中文的话, 必须设置要是能显示中文的字体---符号, 负号不解析
+    mpl.rcParams['font.sans-serif'] = [u'SimHei']  # FangSong/黑体 [u'KaiTi']
+    mpl.rcParams['axes.unicode_minus'] = False
+    plt.title(u'高斯分布函数', fontsize=18)
+    # plt.title(u'Gauss Distribution PDF ')
+    # 背景色
+
+    plt.grid(True)
+    plt.show()
+
+    # 损失函数: Logistic损失(-1,1)/SVM Hinge损失/ 0/1损失
+    # 取-2到3 1001个数
+    x = np.array(np.linspace(start=-2, stop=3, num=1001, dtype=np.float))
+    # x=0,y=1, 保证过01这个点(e^0=1)
+    y_logit = np.log(1 + np.exp(-x)) / math.log(2)
+    y_boost = np.exp(-x)
+
+    # 估计对了就没有损失, 估计错了就是1---true/false
+    a = np.linspace(-3,3, 10)
+    print 'a',a
+    print 'a>o得到的是falseorTrue',a>0
+    # [False False False False False  True  True  True  True  True]
+    # print a<0
+    y_01 = x < 0
+
+    # y=1-x的斜线
+    y_hinge = 1.0 - x
+    y_hinge[y_hinge < 0] = 0
+    plt.plot(x, y_logit, 'r-', label='Logistic Loss', linewidth=2)
+    plt.plot(x, y_01, 'g-', label='0/1 Loss', linewidth=2)
+    plt.plot(x, y_hinge, 'b-', label='Hinge Loss', linewidth=2)
+    plt.plot(x, y_boost, 'm--', label='Adaboost Loss', linewidth=2)
+    plt.grid()
+    # 用来显示label
+    plt.legend(loc='upper right')
+    # 将画的图保存到根目录的名字
+    plt.savefig('1.png')
+    plt.show()
+
+    def f(x):
+        # likex: 做一个和x形状完全相同的数组
+        y = np.ones_like(x)
+        # 将x>0的部分提取出来, 101个true/false
+        i = x > 0
+        # 正的都拿出来, 赋值给y
+        y[i] = np.power(x[i], x[i])
+
+        # 将x<0的false, 都拿出来,取负值, 相当于做了一个轴对称
+        i = x < 0
+        y[i] = np.power(-x[i], -x[i])
+        return y
+    # 5.3 x^x
+    #  从-1.3-->1.3 取101个数
+    x = np.linspace(-1.3, 1.3, 101)
+    y = f(x)
+    plt.plot(x, y, 'g-', label='x^x', linewidth=2)
+    plt.grid()
+    plt.legend(loc='upper left')
+    plt.show()
+
+    # 5.4 胸型线
+    x = np.arange(1, 0, -0.001)
+    y = (-3 * x * np.log(x) + np.exp(-(40 * (x - 1 / np.e)) ** 4) / 25) / 2
+    plt.figure(figsize=(5,7))
+    plt.plot(y, x, 'r-', linewidth=2)
+    plt.grid(True)
+    plt.savefig('breas.png')
+    plt.show()
+
+    # 5.5 心形线
+    # 这里的7, 只要是大于2*np.pi的都可以
+    t = np.linspace(0, 7, 100)
+    x = 16 * np.sin(t) ** 3
+    y = 13 * np.cos(t) - 5 * np.cos(2*t) - 2 * np.cos(3*t) - np.cos(4*t)
+    plt.plot(x, y, 'r-', linewidth=2)
+    plt.grid(True)
+    plt.show()
+
+
+    # # 5.6 渐开线
+    t = np.linspace(0, 50, num=1000)
+    x = t*np.sin(t) + np.cos(t)
+    y = np.sin(t) - t*np.cos(t)
+    plt.plot(x, y, 'r-', linewidth=2)
+    plt.grid()
+    plt.show()
+
+    # # Bar
+    # mpl.rcParams['font.sans-serif'] = [u'SimHei']  #黑体 FangSong/KaiTi
+    # mpl.rcParams['axes.unicode_minus'] = False
+    x = np.arange(0, 10, 0.1)
+    y = np.sin(x)
+    plt.bar(x, y, width=0.04, linewidth=0.2)
+    plt.plot(x, y, 'r--', linewidth=2)
+    plt.title(u'Sin曲线')
+    plt.xticks(rotation=-60)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.grid()
+    plt.show()
