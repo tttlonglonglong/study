@@ -15,7 +15,6 @@ module.exports = {
 		filename: '[name].bundle.js',
 		path: path.resolve(__dirname, 'dist')
 	},
-
 	// 插件
 	plugins: [
 		new CleanWebpackPlugin(['dist']),
