@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <input type="file" name="pic" id="pic"/>
+    <input type="button" onClick="upload()" value="上传" />
+</form>
+<script>
+    function upload(){
+        // 请求的后端方法
+        var url="upload";
+        // 获取文件
+        var pic = document.getElementById('pic').files[0];
+
+        // 初始化一个 XMLHttpRequest 对象
+        var xhr = new XMLHttpRequest();
+        // 初始化一个 FormData 对象
+        var form = new FormData();
+
+
+
+        // 携带文件
+        form.append("pic", pic);
+
+        // 添加后的form是什么
+        console.log('添加后的form是什么', form)
+        //开始上传
+        xhr.open("POST", url, true);
+        //在readystatechange事件上绑定一个事件处理函数
+        xhr.onreadystatechange=callback;
+        xhr.send(form);
+
+        function callback() {
+            if(xhr.readyState == 4){
+                if(xhr.status == 200){
+                    if(xhr.responseText == 1){
+                        alert('添加成功');
+                        window.location.reload();
+                    }else{
+                        alert("添加失败");
+                    }
+                }
+            }
+        }
+    }
+
+
+</script>
+</body>
+</html>
