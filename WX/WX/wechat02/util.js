@@ -14,7 +14,7 @@ exports.parseXMLAsync = function(xml){
             else  resolve(content)
         })
     })
-}
+};
 
 // 把对象中的数组打印出来, 把对象中的对象大一出来
 function formatMessage(result){
@@ -38,25 +38,25 @@ function formatMessage(result){
     return message;
 }
 
-
-exports.formatMessage = formatMessage
+exports.formatMessage = formatMessage;
 
 exports.tpl = function (content, message) {
-    var info = {}
-    var tyoe = 'text'
-    var fromUsername = message.FromUserName
-    var toUsername = message.ToUserName
+    var info = {};  //临时存储回复的内容
+    var type = 'text';
+    var fromUserName = message.FromUserName;
+    var toUserName = message.ToUserName;
 
-    if (Array.isArray(content)){
-        type = news
+    if (Array.isArray(content)){ // 若果content是一个数组的话, 我们就认为是一个图文消息, 微信:  图文消息才是数组
+        type = 'news'
     }
-
-    type = content.type || type
-    info.content = content
-    info.createTime = new Date().getTime()
-    info.msgType = type
-    info.toUserName = fromUsername
-    info.fromUserName = toUsername
+    console.log('模板传入的content', content);
+    console.log('模板传入的message', message);
+    type = content.type || type;  //传了type就用传的,  没有用传的就用默认的
+    info.content = content;
+    info.createTime = new Date().getTime();
+    info.msgType = type;
+    info.toUserName = toUserName;
+    info.fromUserName = fromUserName;
 
     return tpl.compiled(info)
 }

@@ -75,7 +75,8 @@ Wechat.prototype.replay = function(){
     var content = this.body;
     var message = this.weixin;
 
-    var xml = util.tpl(content,message);
+    console.log('this', this, 'this.body', this.body, ' this.weixin',  this.weixin,  'replay');
+    var xml = util.tpl(content, message);
 
     this.status = 200;
     this.type = 'application/xml';

@@ -1,3 +1,7 @@
+/*
+ * 中间件
+ * 对请求类型进行判断，实现逻辑分离
+ */
 'use strict'
 var sha1 = require('sha1');
 var contentType = require('content-type')
@@ -5,7 +9,7 @@ var getRawBody = require('raw-body')
 
 var Wechat = require('./wechat')
 var util = require('./util')
-module.exports = function (opts) {
+module.exports = function (opts, handler) {
     var wechat = new Wechat(opts);//我们实例化一下Wechat，就可以在中间件中直接调用了
     return function *(next) {
 
@@ -37,7 +41,7 @@ module.exports = function (opts) {
                 return false
             }
 
-            console.log('enter-Post', 'this.length',this.length);
+            console.log('enter-Post', 'this',this);
             // yield 获得异步post请求过来的数据, raw-body 获得原始的 XML 数据
             var data = yield  getRawBody(this.req, {
                 length:this.req.headers['content-length'], //post过来的数据长度
@@ -49,16 +53,16 @@ module.exports = function (opts) {
             console.log('this.XML.data', data.toString())
 
             var content = yield util.parseXMLAsync(data)
-            console.log('content', content)
+            console.log('thiscontent', content)
 
             var message = util.formatMessage(content.xml);
-            console.log('message', message)
+            console.log('thismessage', message)
 
             this.weixin = message;  //挂载消息
 
-            yield handler.call(this,next);   //转到业务层逻辑
+            yield handler.call(this,next);   //转到业务层逻辑, 把next作为参数传给handler
 
-            wechat.replay.call(this);  //真正回复
+            wechat.replay.call(this);  //真正回复 之后, 请求响应的流程会真正糊掉这里
         }
 
 
